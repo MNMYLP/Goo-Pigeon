@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "@vue/composition-api": "^1.7.1"
+  },
+  "dependencies": {
+    "vue-echarts": "^6.5.4"
+  }
+}

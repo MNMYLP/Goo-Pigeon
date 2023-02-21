@@ -19,7 +19,32 @@ import './permission' // permission control
 import './utils/error-log' // error log
 
 import * as filters from './filters' // global filters
+// // main.js
+// import AMap from 'vue-amap'
+// Vue.use(AMap)
+// AMap.initAMapApiLoader({
+//   key: '66c796322a809f51a06508f8b8b48952',
+//   plugin: ['AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PlaceSearch', 'AMap.Geolocation', 'AMap.Geocoder', 'AMap.ElasticMarker']// 一些需要用到的插件
+// })
+// 地图
+// import AmapVue from '@amap/amap-vue'
 
+// AmapVue.config.version = '2.0' // 默认2.0，这里可以不修改
+// AmapVue.config.key = '66c796322a809f51a06508f8b8b48952'
+// AmapVue.config.plugins = [
+//   'AMap.ToolBar',
+//   'AMap.MoveAnimation'
+//   // 在此配置你需要预加载的插件，如果不配置，在使用到的时候会自动异步加载
+// ]
+// Vue.use(AmapVue)
+// 地图
+import echarts from 'echarts'
+Vue.use(echarts)
+Vue.prototype.$echarts = echarts
+// Vue.use('$echerts', echarts)
+// import 'echarts'
+// import ECharts from 'vue-echarts'
+// Vue.component('VueEcharts', ECharts)
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

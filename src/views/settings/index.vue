@@ -1,6 +1,10 @@
 <!--  -->
 <template>
-  <div class="settings">
+  <div
+    class="settings"
+    style="width: 98%;
+    margin: 0;"
+  >
     settings.vue
   </div>
 </template>

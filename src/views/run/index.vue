@@ -1,22 +1,57 @@
 <!--  -->
 <template>
-  <div class="run">
+  <div
+    class="run"
+    style="width: 98%;
+    margin: 0 auto;"
+  >
     <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="用户管理" name="first">用户管理</el-tab-pane>
-      <el-tab-pane label="配置管理" name="second">配置管理</el-tab-pane>
-      <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>
-      <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
+      <el-tab-pane label="学生数据" name="first">
+        <div>
+          <Studata />
+        </div>
+      </el-tab-pane>
+      <el-tab-pane label="跑步明细" name="second">
+        <div>
+          <Details />
+        </div>
+      </el-tab-pane>
+      <el-tab-pane label="学校院系概况" name="third">
+        <Department />
+      </el-tab-pane>
+      <el-tab-pane label="成绩分布分析" name="fourth">
+        <charts />
+      </el-tab-pane>
+      <el-tab-pane label="有效次数分析" name="cishu">
+        <analyse />
+      </el-tab-pane>
+      <el-tab-pane label="跑步评分分析" name="run">
+        <run />
+      </el-tab-pane>
+      <el-tab-pane label="打卡点设置" name="daka">
+        <clock />
+      </el-tab-pane>
+      <el-tab-pane label="跑步规则设置" name="runguize">跑步规则设置</el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
+import Studata from '@/views/run/component/data.vue'
+import Details from '@/views/run/component/details.vue'
+import Department from '@/views/run/component/department.vue'
+import charts from '@/views/run/component/charts.vue'
+import analyse from '@/views/run/component/analyse.vue'
+import run from '@/views/run/component/run.vue'
+import clock from '@/views/run/component/clock.vue'
 export default {
-  components: {},
+  components: {
+    Studata, Details, Department, charts, analyse, run, clock
+  },
   data() {
     // 这里存放数据
     return {
-      activeName: 'second'
+      activeName: 'first'
     }
   },
   // 监听属性 类似于data概念

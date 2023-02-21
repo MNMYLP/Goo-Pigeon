@@ -1,6 +1,10 @@
 <!--  -->
 <template>
-  <div class="dashboard">
+  <div
+    class="dashboard"
+    style="width: 98%;
+    margin: 0;"
+  >
     <el-select v-model="value" placeholder="请选择">
       <el-option
         v-for="item in options"

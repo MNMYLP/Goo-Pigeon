@@ -1,6 +1,10 @@
 <!--  -->
 <template>
-  <div class="stu">
+  <div
+    class="stu"
+    style="width: 98%;
+    margin: 0;"
+  >
     <el-tabs v-model="activeName" style="transform: translateX(17px) !important;" @tab-click="handleClick">
       <el-tab-pane label="课程管理" name="first">
         <div class="nav">
