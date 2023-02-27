@@ -91,20 +91,30 @@
         <el-form-item label="打卡地名称" prop="name">
           <el-input v-model="ruleForm.name" />
         </el-form-item>
-        <el-form-item />
+        <el-form-item>
+          <Map />
+        </el-form-item>
+        <el-form-item label="打卡地名称" prop="name">
+          <el-input v-model="ruleForm.name" />
+        </el-form-item>
+        <el-form-item label="地点状态" prop="name">
+          <el-radio v-model="radio" label="1">启用</el-radio>
+          <el-radio v-model="radio" label="2">禁用</el-radio>
+        </el-form-item>
       </el-form>
     </el-drawer>
   </div>
 </template>
 
 <script>
-// import Map from '@/components/Map/MapContainer.vue'
+import Map from '@/components/Map/index.vue'
 export default {
   name: 'StuData',
-  //   components: { Map },
+  components: { Map },
   data() {
     // 这里存放数据
     return {
+      radio: '1',
       activeName: 'first',
       tableData: [{
         school_name: '山东大学',
@@ -306,5 +316,7 @@ export default {
 p{
   margin: 0 !important;;
 }
-
+.el-drawer{
+  width: 50%!important;
+}
 </style>

@@ -31,7 +31,9 @@
       <el-tab-pane label="打卡点设置" name="daka">
         <clock />
       </el-tab-pane>
-      <el-tab-pane label="跑步规则设置" name="runguize">跑步规则设置</el-tab-pane>
+      <el-tab-pane label="跑步规则设置" name="runguize">
+        <rules />
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -44,9 +46,10 @@ import charts from '@/views/run/component/charts.vue'
 import analyse from '@/views/run/component/analyse.vue'
 import run from '@/views/run/component/run.vue'
 import clock from '@/views/run/component/clock.vue'
+import rules from '@/views/run/component/rules.vue'
 export default {
   components: {
-    Studata, Details, Department, charts, analyse, run, clock
+    Studata, Details, Department, charts, analyse, run, clock, rules
   },
   data() {
     // 这里存放数据
@@ -79,4 +82,8 @@ export default {
 }
 </script>
 <style scoped>
+.el-drawer.rtl {
+    right: 0;
+    width: 50%;
+}
 </style>

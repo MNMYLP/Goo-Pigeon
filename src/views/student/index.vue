@@ -1,7 +1,7 @@
 <!--  -->
 <template>
   <div class="stu">
-    <el-tabs v-model="activeName" style="transform: translateX(17px) !important;" @tab-click="handleClick">
+    <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="学生管理" name="first">
         <div class="nav">
           <div class="left">

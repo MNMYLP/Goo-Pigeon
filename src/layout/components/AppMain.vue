@@ -1,5 +1,9 @@
 <template>
-  <section class="app-main">
+  <section
+    class="app-main"
+    style="width: 98%;
+    margin: 0 auto;"
+  >
     <transition name="fade-transform" mode="out-in">
       <keep-alive :include="cachedViews">
         <router-view :key="key" />
@@ -54,4 +58,7 @@ export default {
     padding-right: 15px;
   }
 }
+// .stu {
+//   margin: 10px!important;
+// }
 </style>
