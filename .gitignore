@@ -5,7 +5,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 **/*.log
-
+src/assets/video/index.mp4
+src/assets/video/1 夜喵.mp4
 tests/**/coverage/
 tests/e2e/reports
 selenium-debug.log

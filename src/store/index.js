@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import getters from './getters'
-
+import { userInfo } from '@/api/user'
+import { Message } from 'element-ui'
 Vue.use(Vuex)
 
 // https://webpack.js.org/guides/dependency-management/#requirecontext
@@ -17,9 +18,22 @@ const modules = modulesFiles.keys().reduce((modules, modulePath) => {
   return modules
 }, {})
 
+const actions = {
+  async hasUserInfo(context) {
+    try {
+      console.log('1111111111111111111111111111111111111111111111')
+      const res = await userInfo()
+      store.state.user.userInfo = res.data.user
+      console.log(res.data.user)
+    } catch (error) {
+      Message.error('用户信息获取失败')
+    }
+  }
+}
 const store = new Vuex.Store({
   modules,
-  getters
+  getters,
+  actions
 })
 
 export default store

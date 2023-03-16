@@ -1,5 +1,8 @@
 <template>
-  <div class="clock_from" style="display: flex">
+  <div
+    class="clock_from"
+    style="display: flex"
+  >
     <div>
       <div>
         <el-select
@@ -29,10 +32,13 @@
           </el-option>
         </el-select>
       </div>
-      <div id="container" class="container" />
+      <div
+        id="container"
+        class="container"
+      />
     </div>
     <!-- <div class="info-box">
-      纬度：{{ form.lat }}
+      纬度：{{ form.34 }}
       <br>
       经度：{{ form.lng }}
       <p>详细地址：{{ form.address }}</p>

@@ -227,10 +227,37 @@ aside {
 .stu {
   margin: 0 auto!important;
   .el-drawer{
-    width: 50%!important;
+    width: 30%!important;
   }
   .el-form-item[data-v-33055a64] {
     margin-bottom: 22px;
   }
 }
+
+.video-player{
+  border-radius:15px;
+}
+// .stu .el-upload {
+//   display: inline-block;
+//   text-align: center;
+//   cursor: pointer;
+//   outline: none;
+//   color: #fff;
+//   width: 79px;
+//   line-height: 27px;
+//   background: rgb(24, 144, 255);
+//   border-radius: 5px;
+// }
 // div[data-v-6c66ca75]
+.el-form-item--medium .el-form-item__content {
+  line-height: 1px;
+}
+.login-container .login-form[data-v-37dfd6fc] {
+  position: absolute!important;
+  width: 520px;
+  max-width: 100%;
+  padding: 160px 35px 0;
+  margin: 0 auto;
+  overflow: hidden;
+  left: 55%;
+}

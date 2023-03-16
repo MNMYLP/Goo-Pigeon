@@ -1,5 +1,6 @@
 import { asyncRoutes, constantRoutes } from '@/router'
-
+// import { userInfo } from '@/api/user'
+// import store from '@/store/index'
 /**
  * Use meta.role to determine if the current user has permission
  * @param roles
