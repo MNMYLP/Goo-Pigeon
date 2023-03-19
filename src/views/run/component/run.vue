@@ -520,4 +520,12 @@ p{
   color: rgb(144, 147, 153);
   text-align: right;
 }
+#main {
+    width: 900px;
+    height: 400px;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    position: relative;
+    margin: 0 auto;
+}
 </style>

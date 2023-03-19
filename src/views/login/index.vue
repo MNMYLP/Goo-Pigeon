@@ -67,7 +67,7 @@
         style="width:100%;margin-bottom:30px;"
         @click.native.prevent="handleLogin"
       >
-        Login
+        登录
       </el-button>
 
       <div style="position:relative">
@@ -121,6 +121,7 @@
 </template>
 
 <script>
+
 import { validUsername } from '@/utils/validate'
 import SocialSign from './components/SocialSignin'
 import { login } from '@/api/user'
@@ -210,8 +211,10 @@ export default {
             const res = await login(this.loginForm)
             // const rest = await userInfo()
             localStorage.setItem('token', res.data.token)
+            localStorage.setItem('tokenStartTime', new Date().getTime())
             // console.log(res)
             this.$store.state.user.token = res.data.token
+            localStorage.setItem('permissions', JSON.stringify(this.$store.state.user.permissions))
             this.loading = false
             this.$router.push('/dashboard')
           } catch (error) {
@@ -257,7 +260,6 @@ $light_gray:#eee;
     margin: 0 auto;
     overflow: hidden;
   }
-
   .tips {
     font-size: 14px;
     color: #fff;

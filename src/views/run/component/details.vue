@@ -1,52 +1,116 @@
 <!--  -->
 <template>
-  <div class="stu">
+  <div
+    class="stu"
+    style="width: 98%;margin: 0;"
+  >
     <div class="nav">
-      <div class="left">
+      <form class="left">
         学期名称：
-        <el-select v-model="value" class="size" placeholder="请选择">
+        <el-select
+          v-model="manageform.termName"
+          class="size"
+          placeholder="请选择"
+        >
           <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            label="春季学期"
+            value="春季学期"
+          />
+          <el-option
+            label="秋季学期"
+            value="秋季学期"
           />
         </el-select>
         院系名称：
-        <el-select v-model="value" class="size" placeholder="请选择">
+        <el-select
+          v-model="manageform.departmentName"
+          class="size"
+          placeholder="请选择"
+        >
           <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            v-for="(item,index) in options"
+            :key="index"
+            :label="item"
+            :value="item"
           />
         </el-select>
         入学年份：
-        <el-select v-model="value" class="size" placeholder="请选择">
+        <el-select
+          v-model="manageform.enrollmentYear"
+          class="size"
+          size="mini"
+          placeholder="请输入内容"
+        >
           <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            label="2023"
+            value="2023"
+          />
+          <el-option
+            label="2022"
+            value="2022"
+          />
+          <el-option
+            label="2021"
+            value="2021"
+          />
+          <el-option
+            label="2020"
+            value="2020"
+          />
+          <el-option
+            label="2019"
+            value="2019"
+          />
+          <el-option
+            label="2018"
+            value="2018"
           />
         </el-select>
         性别：
-        <el-select v-model="value" class="size" placeholder="请选择">
+        <el-select
+          v-model="manageform.gender"
+          class="size"
+          placeholder="请选择"
+        >
           <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            label="男"
+            value="男"
+          />
+          <el-option
+            label="女"
+            value="女"
           />
         </el-select>
         学生姓名：
-        <el-input v-model="input" class="size" size="mini" placeholder="请输入学生姓名" />
-        <el-button size="mini" type="primary" plain>查询</el-button>
-        <el-button size="mini" plain @click="clear()">重置</el-button>
-      </div>
+        <el-input
+          v-model="manageform.studentName"
+          class="size"
+          placeholder="请键入"
+        />
+        <el-button
+          size="mini"
+          type="primary"
+          plain
+          @click="run_table_select()"
+        >
+          查询
+        </el-button>
+        <el-button
+          size="mini"
+          plain
+          @click="clear()"
+        >
+          重置
+        </el-button>
+      </form>
       <div class="right">
-        <el-button type="primary" style="margin-left: 16px;">
-          添加课程
+        <el-button
+          id="del_btn"
+          size="mini"
+          type="primary"
+          @click="table_xlsx()"
+        >
+          导出
         </el-button>
       </div>
     </div>
@@ -60,106 +124,115 @@
       @selection-change="handleSelectionChange"
     >
       <el-table-column
-        type="index"
         label="序号"
+        type="index"
         width="55"
       />
       <el-table-column
-        prop="school_name"
+        prop="departmentName"
+        show-overflow-tooltip="true"
         label="院系名称"
       >
         <!-- <template slot-scope="scope">{{ scope.row.date }}</template> -->
       </el-table-column>
       <el-table-column
-        prop="department"
+        prop="enrollmentYear"
+        label="入学年份"
+      />
+      <el-table-column
+        prop="studentId"
         label="学号"
       />
       <el-table-column
-        prop="addyear"
+        prop="studentName"
         label="学生姓名"
       />
       <el-table-column
-        prop="class"
+        prop="gender"
         label="性别"
       />
       <el-table-column
-        prop="stu_namber"
+        prop="state"
         label="是否有效"
       />
       <el-table-column
-        prop="name"
-        label="跑步里程(公里)"
+        prop="miles"
+        label="跑步里程（公里）"
       />
       <el-table-column
-        prop="sex"
+        prop="punchNumber"
+        show-overflow-tooltip="true"
         label="打卡编号"
       />
       <el-table-column
-        prop="phone"
+        prop="averagePace"
         label="平均配速"
       />
       <el-table-column
-        prop="phone"
+        prop="startTime"
         label="开始时间"
       />
       <el-table-column
-        prop="phone"
+        prop="endTime"
         label="结束时间"
       />
+      <el-table-column
+        prop="operate"
+        label="操作"
+      >
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="text"
+            plain
+            @click="delect(scope.row.id)"
+          >
+            删除
+          </el-button>
+        </template>
+      </el-table-column>
     </el-table>
+    <el-pagination
+      background
+      :page-size="page.size"
+      :pager-count="10"
+      layout="prev, pager, next"
+      :total="page.count"
+      @current-change="handleCurrentChange"
+    />
   </div>
 </template>
 
 <script>
+import { run_clock, run_clock_search, run_clock_delete } from '@/api/run'
+import { export_json_to_excel } from '@/vendor/Export2Excel'
 export default {
-  name: 'Details',
+  name: 'StuData',
   components: {},
   data() {
     // 这里存放数据
     return {
       activeName: 'first',
-      tableData: [{
-        school_name: '山东大学',
-        department: '黑人系',
-        addyear: '2020-1-1',
-        class: '刚果金',
-        stu_namber: '114514',
-        name: '小黑',
-        sex: '男',
-        phone: '114514114514',
-        state: 0,
-        time: '2020-1-2'
-      }],
-      multipleSelection: [],
-      input: '',
-      options: [{
-        value: '选项1',
-        label: '黄金糕'
-      }, {
-        value: '选项2',
-        label: '双皮奶'
-      }, {
-        value: '选项3',
-        label: '蚵仔煎'
-      }, {
-        value: '选项4',
-        label: '龙须面'
-      }, {
-        value: '选项5',
-        label: '北京烤鸭'
-      }],
-      value: '',
-      drawer: false,
-      direction: 'rtl',
+      tableData: [],
+      options: [],
       ruleForm: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
+        id: '',
+        semester: '',
+        participants: '',
+        courseName: '',
+        teacher: '',
+        registrationTime: '',
+        courseCapacity: '',
         resource: '',
-        desc: ''
+        desc: '',
+        textarea: ''
+      },
+      manageform: {
+        departmentName: '',
+        enrollmentYear: '',
+        termName: '',
+        studentName: '',
+        gender: ''
       },
       rules: {
         name: [
@@ -188,56 +261,12 @@ export default {
       dialogImageUrl: '',
       dialogVisible: false,
       textarea: '',
-      tableData1: [{
-        date: '2016-05-03',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-02',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-08',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-06',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-07',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }]
+      tableData1: [],
+      page: {
+        curr: 1,
+        size: 10,
+        count: 0
+      }
     }
   },
   // 监听属性 类似于data概念
@@ -245,7 +274,9 @@ export default {
   // 监控data中的数据变化
   watch: {},
   // 生命周期 - 创建完成（可以访问当前this实例）
-  created() {},
+  created() {
+    this.tableList()
+  },
   // 生命周期 - 挂载完成（可以访问DOM元素）
   beforeCreate() {}, // 生命周期 - 创建之前
   beforeMount() {}, // 生命周期 - 挂载之前
@@ -257,41 +288,73 @@ export default {
   mounted() {},
   // 方法集合
   methods: {
-    handleClick(tab, event) {
-      console.log(tab, event)
-    //   console.log(new Date())
+    handleSelectionChange(e) {
+      console.log(e)
     },
-    clear() {
-      this.value = ''
+    handleCurrentChange(val) {
+      this.page.curr = val
+      this.tableList()
     },
-    toggleSelection(rows) {
-      if (rows) {
-        rows.forEach(row => {
-          this.$refs.multipleTable.toggleRowSelection(row)
+    async tableList() {
+      const res = await run_clock(this.page)
+      console.log(res)
+      this.tableData = res.data
+      if (res.code !== 400 && res.code !== 500) {
+        this.page.count = res.code
+      }
+      this.options = res.data.map(item => {
+        return item.departmentName
+      })
+    },
+    async run_table_select() {
+      try {
+        const res = await run_clock_search(this.manageform)
+        this.$message({
+          message: '搜索成功',
+          type: 'success'
         })
-      } else {
-        this.$refs.multipleTable.clearSelection()
+        console.log(res)
+        this.tableData = res.data
+      } catch (error) {
+        this.$message({
+          message: '搜索失败',
+          type: 'error'
+        })
       }
     },
-    handleSelectionChange(val) {
-      this.multipleSelection = val
+    async delect(id) {
+      try {
+        const ls = await run_clock_delete(id)
+        console.log(ls)
+        if (ls.code === 200) {
+          this.$message({
+            message: '删除成功',
+            type: 'success'
+          })
+          this.tableList()
+        }
+      } catch (error) {
+        this.$message.error(error)
+      }
     },
-    handleClose(done) {
-      this.$confirm('确认关闭？')
-        .then(_ => {
-          done()
+    table_xlsx() {
+      var tHeader = ['院系名称', '入学年份', '学期名称', '学号', '姓名', '性别', '有效次数', '有效里程']
+      var filterVal = ['departmentName', 'enrollmentYear', 'termName', 'studentId', 'studentName', 'gender', 'validTimes', 'validMileage']
+      var filename = '学生运动表'
+      var data = this.formatJson(filterVal, this.tableData)
+      export_json_to_excel({
+        header: tHeader,
+        data,
+        filename
+      })
+    },
+    formatJson(filterVal, tableData) {
+      return tableData.map(v => {
+        return filterVal.map(j => {
+          return v[j]
         })
-        .catch(_ => {})
-    },
-    onSubmit() {
-    //   console.log('submit!')
-    },
-    handleRemove(file, fileList) {
-      console.log(file, fileList)
-    },
-    handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url
-      this.dialogVisible = true
+      }
+      )
     }
   }
 }

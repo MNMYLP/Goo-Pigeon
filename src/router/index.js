@@ -5,7 +5,6 @@ Vue.use(Router)
 
 /* Layout */
 import Layout from '@/layout'
-
 export const constantRoutes = [
   {
     path: '/redirect',
@@ -73,7 +72,7 @@ export const constantRoutes = [
         path: 'index',
         component: () => import('@/views/teacher/index'),
         name: 'Teacher',
-        meta: { title: '教师管理', icon: 'guide', noCache: true }
+        meta: { title: '教师管理', icon: 'excel', noCache: true }
       }
     ]
   },
@@ -116,44 +115,78 @@ export const constantRoutes = [
       }
     ]
   },
-  {
-    path: '/base',
-    component: Layout,
-    redirect: '/base/index',
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/base/index'),
-        name: 'Base',
-        meta: { title: '基础设置', icon: 'user', noCache: true }
-      }
-    ]
-  },
-  {
-    path: '/settings',
-    component: Layout,
-    redirect: '/settings/index',
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/settings/index'),
-        name: 'Settings',
-        meta: { title: '系统管理', icon: 'user', noCache: true }
-      }
-    ]
-  },
+  // {
+  //   path: '/base',
+  //   component: Layout,
+  //   redirect: '/base/index',
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/base/index'),
+  //       name: 'Base',
+  //       meta: { title: '基础设置', icon: 'user', noCache: true }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/settings',
+  //   component: Layout,
+  //   redirect: '/settings/index',
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/settings/index'),
+  //       name: 'Settings',
+  //       meta: { title: '系统管理', icon: 'user', noCache: true }
+  //     }
+  //   ]
+  // },
   { path: '*', redirect: '/404', hidden: true }
 ]
 
+export const TestRoutes = [
+  {
+    path: '/redirect',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '/redirect/:path(.*)',
+        component: () => import('@/views/redirect/index')
+      }
+    ]
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('@/views/login'),
+    hidden: true
+  },
+  {
+    path: '/auth-redirect',
+    component: () => import('@/views/login/auth-redirect'),
+    hidden: true
+  },
+  {
+    path: '/404',
+    component: () => import('@/views/error-page/404'),
+    hidden: true
+  },
+  {
+    path: '/401',
+    component: () => import('@/views/error-page/401'),
+    hidden: true
+  }
+]
 export const asyncRoutes = [
 ]
+var lib = constantRoutes
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
-  routes: constantRoutes
+  routes: lib
 })
-
 const router = createRouter()
 
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465

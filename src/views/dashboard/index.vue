@@ -245,12 +245,6 @@ export default {
           'sales22222': 0,
           'sales33333': 0
         }
-        this.tableData = this.tableData.map(item => {
-          return { ...item,
-            sales_sum: item.sales1 + item.sales11 + item.sales111 + item.sales1111 + item.sales11111,
-            sales_sum_certified: item.sales2 + item.sales22 + item.sales222 + item.sales2222 + item.sales22222,
-            sales_sum_no_certified: item.sales3 + item.sales33 + item.sales333 + item.sales3333 + item.sales33333 }
-        })
         this.tableData.forEach(item => {
           lwt.sales1 += item.sales1
           lwt.sales2 += item.sales2
@@ -269,6 +263,12 @@ export default {
           lwt.sales33333 += item.sales33333
         })
         this.tableData.push(lwt)
+        this.tableData = this.tableData.map(item => {
+          return { ...item,
+            sales_sum: item.sales1 + item.sales11 + item.sales111 + item.sales1111 + item.sales11111,
+            sales_sum_certified: item.sales2 + item.sales22 + item.sales222 + item.sales2222 + item.sales22222,
+            sales_sum_no_certified: item.sales3 + item.sales33 + item.sales333 + item.sales3333 + item.sales33333 }
+        })
       } catch (error) {
         this.$message.error(error)
       }

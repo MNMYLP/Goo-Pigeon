@@ -1,6 +1,7 @@
 const state = {
   token: localStorage.getItem('token'),
-  userInfo: localStorage.getItem('userInfo')
+  userInfo: [],
+  permissions: localStorage.getItem('permissions')
 }
 
 const mutations = {

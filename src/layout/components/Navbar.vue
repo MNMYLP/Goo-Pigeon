@@ -43,9 +43,13 @@
         trigger="click"
       >
         <div class="avatar-wrapper">
-          <!-- <span>{{ store.state.user.userInfo.nickName }}</span> -->
+          <span
+            style="    position: relative;
+    right: 10px;
+    top: -10px;"
+          >{{ $store.state.user.userInfo[0].user.nickName }}</span>
           <img
-            src="http://rrjgiz15d.hn-bkt.clouddn.com/%29O17U0%29Z_%5BJ5QWJ1%40IATDV8_tmb.png"
+            :src="$store.state.user.userInfo[0].user.avatar"
             class="user-avatar"
           >
           <i class="el-icon-caret-bottom" />
@@ -73,7 +77,7 @@
             divided
             @click.native="logout"
           >
-            <span style="display:block;">Log Out</span>
+            <span style="display:block;">登出</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -89,7 +93,6 @@ import ErrorLog from '@/components/ErrorLog'
 import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
-
 export default {
   components: {
     Breadcrumb,
@@ -111,8 +114,11 @@ export default {
       this.$store.dispatch('app/toggleSideBar')
     },
     async logout() {
-      await this.$store.dispatch('user/logout')
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      localStorage.clear()
+      this.$store.state.user.token = null
+      this.$store.state.user.userInfo = []
+      this.$store.state.user.permissions = null
+      this.$router.push(`/login`)
     }
   }
 }

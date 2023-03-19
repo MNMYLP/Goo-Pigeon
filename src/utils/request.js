@@ -18,7 +18,7 @@ service.interceptors.request.use(function(config) {
   const userinfo = window.localStorage.getItem('token')
   // console.log(userinfo)
   // 判断token存在再做配置
-  if (userinfo) {
+  if (window.localStorage.getItem('token')) {
     // 注意：token前边有 'Bearer ' 的信息前缀,API接口需求，Bearer后边有空格
     config.headers.token = userinfo
   }
@@ -43,29 +43,6 @@ service.interceptors.response.use(
   response => {
     const res = response.data
 
-    // if the custom code is not 20000, it is judged as an error.
-    // if (res.code !== 200) {
-    //   Message({
-    //     message: res.message || 'Error',
-    //     type: 'error',
-    //     duration: 5 * 1000
-    //   })
-
-    // // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
-    // if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
-    //   // to re-login
-    //   MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
-    //     confirmButtonText: 'Re-Login',
-    //     cancelButtonText: 'Cancel',
-    //     type: 'warning'
-    //   }).then(() => {
-    //     store.dispatch('user/resetToken').then(() => {
-    //       location.reload()
-    //     })
-    //   })
-    // }
-    //   // return Promise.reject(new Error(res.message || 'Error'))
-    // } else {
     return res
     // }
   },

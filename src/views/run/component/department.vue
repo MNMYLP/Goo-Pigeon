@@ -63,138 +63,85 @@
       @selection-change="handleSelectionChange"
     >
       <el-table-column
-        label="XXX学校各院系跑步情况"
+        label="新余学校各院系跑步情况"
         width="55"
       >
         <el-table-column
-          prop="school_name"
+          prop="departmentName"
           sortable
           label="院系"
         >
         <!-- <template slot-scope="scope">{{ scope.row.date }}</template> -->
         </el-table-column>
         <el-table-column
-          prop="department"
+          prop="totalValidity"
           sortable
           label="总有效次数"
         />
         <el-table-column
-          prop="addyear"
+          prop="totalMiles"
           sortable
           label="总有效里程"
         />
         <el-table-column
-          prop="class"
+          prop="totalNumber"
           sortable
           label="总参与人数"
         />
         <el-table-column
-          prop="stu_namber"
+          prop="totalCapital"
           sortable
           label="有效人均次数"
         />
         <el-table-column
-          prop="name"
+          prop="totalMilesCapital"
           sortable
           label="有效人均里程"
         />
       </el-table-column>
     </el-table>
+    <el-pagination
+      background
+      :page-size="page.size"
+      :pager-count="10"
+      layout="prev, pager, next"
+      :total="page.count"
+      @current-change="handleCurrentChange"
+    />
     <p class="botoom">默认根据各学院总有效次数从多到小排序</p>
   </div>
 </template>
 
 <script>
+import { run_clock, run_clock_search, run_clock_delete } from '@/api/run'
+import { export_json_to_excel } from '@/vendor/Export2Excel'
 export default {
-  name: 'Details',
+  name: 'StuData',
   components: {},
   data() {
     // 这里存放数据
     return {
-      pickerOptions: {
-        shortcuts: [{
-          text: '最近一周',
-          onClick(picker) {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-            picker.$emit('pick', [start, end])
-          }
-        }, {
-          text: '最近一个月',
-          onClick(picker) {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-            picker.$emit('pick', [start, end])
-          }
-        }, {
-          text: '最近三个月',
-          onClick(picker) {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-            picker.$emit('pick', [start, end])
-          }
-        }]
-      },
-      value1: '',
-      value2: '',
       activeName: 'first',
-      tableData: [{
-        school_name: '山东大学',
-        department: '黑人系',
-        addyear: '2020-1-1',
-        class: '刚果金',
-        stu_namber: '114514',
-        name: '小黑',
-        sex: '男',
-        phone: '114514114514',
-        state: 0,
-        time: '2020-1-2'
-      },
-      {
-        school_name: '山东大学',
-        department: '黑人系',
-        addyear: '2020-1-1',
-        class: '刚果金',
-        stu_namber: '114514',
-        name: '小黑',
-        sex: '男',
-        phone: '114514114514',
-        state: 0,
-        time: '2020-1-2'
-      }],
-      multipleSelection: [],
-      input: '',
-      options: [{
-        value: '选项1',
-        label: '黄金糕'
-      }, {
-        value: '选项2',
-        label: '双皮奶'
-      }, {
-        value: '选项3',
-        label: '蚵仔煎'
-      }, {
-        value: '选项4',
-        label: '龙须面'
-      }, {
-        value: '选项5',
-        label: '北京烤鸭'
-      }],
-      value: '',
-      drawer: false,
-      direction: 'rtl',
+      tableData: [],
+      options: [],
       ruleForm: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
+        id: '',
+        semester: '',
+        participants: '',
+        courseName: '',
+        teacher: '',
+        registrationTime: '',
+        courseCapacity: '',
         resource: '',
-        desc: ''
+        desc: '',
+        textarea: ''
+      },
+      manageform: {
+        departmentName: '',
+        enrollmentYear: '',
+        termName: '',
+        studentName: '',
+        gender: ''
       },
       rules: {
         name: [
@@ -223,56 +170,12 @@ export default {
       dialogImageUrl: '',
       dialogVisible: false,
       textarea: '',
-      tableData1: [{
-        date: '2016-05-03',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-02',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-08',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-06',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-07',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }]
+      tableData1: [],
+      page: {
+        curr: 1,
+        size: 10,
+        count: 0
+      }
     }
   },
   // 监听属性 类似于data概念
@@ -280,7 +183,9 @@ export default {
   // 监控data中的数据变化
   watch: {},
   // 生命周期 - 创建完成（可以访问当前this实例）
-  created() {},
+  created() {
+    this.tableList()
+  },
   // 生命周期 - 挂载完成（可以访问DOM元素）
   beforeCreate() {}, // 生命周期 - 创建之前
   beforeMount() {}, // 生命周期 - 挂载之前
@@ -292,44 +197,73 @@ export default {
   mounted() {},
   // 方法集合
   methods: {
-    handleClick(tab, event) {
-      console.log(tab, event)
-    //   console.log(new Date())
+    handleSelectionChange(e) {
+      console.log(e)
     },
-    clear() {
-      this.value = ''
+    handleCurrentChange(val) {
+      this.page.curr = val
+      this.tableList()
     },
-    toggleSelection(rows) {
-      if (rows) {
-        rows.forEach(row => {
-          this.$refs.multipleTable.toggleRowSelection(row)
+    async tableList() {
+      const res = await run_clock(this.page)
+      console.log(res)
+      this.tableData = res.data
+      if (res.code !== 400 && res.code !== 500) {
+        this.page.count = res.code
+      }
+      this.options = res.data.map(item => {
+        return item.departmentName
+      })
+    },
+    async run_table_select() {
+      try {
+        const res = await run_clock_search(this.manageform)
+        this.$message({
+          message: '搜索成功',
+          type: 'success'
         })
-      } else {
-        this.$refs.multipleTable.clearSelection()
+        console.log(res)
+        this.tableData = res.data
+      } catch (error) {
+        this.$message({
+          message: '搜索失败',
+          type: 'error'
+        })
       }
     },
-    handleSelectionChange(val) {
-      this.multipleSelection = val
+    async delect(id) {
+      try {
+        const ls = await run_clock_delete(id)
+        console.log(ls)
+        if (ls.code === 200) {
+          this.$message({
+            message: '删除成功',
+            type: 'success'
+          })
+          this.tableList()
+        }
+      } catch (error) {
+        this.$message.error(error)
+      }
     },
-    handleClose(done) {
-      this.$confirm('确认关闭？')
-        .then(_ => {
-          done()
+    table_xlsx() {
+      var tHeader = ['院系名称', '入学年份', '学期名称', '学号', '姓名', '性别', '有效次数', '有效里程']
+      var filterVal = ['departmentName', 'enrollmentYear', 'termName', 'studentId', 'studentName', 'gender', 'validTimes', 'validMileage']
+      var filename = '学生运动表'
+      var data = this.formatJson(filterVal, this.tableData)
+      export_json_to_excel({
+        header: tHeader,
+        data,
+        filename
+      })
+    },
+    formatJson(filterVal, tableData) {
+      return tableData.map(v => {
+        return filterVal.map(j => {
+          return v[j]
         })
-        .catch(_ => {})
-    },
-    onSubmit() {
-    //   console.log('submit!')
-    },
-    handleRemove(file, fileList) {
-      console.log(file, fileList)
-    },
-    handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url
-      this.dialogVisible = true
-    },
-    formatter(row, column) {
-      return row.address
+      }
+      )
     }
   }
 }

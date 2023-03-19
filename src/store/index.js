@@ -20,11 +20,11 @@ const modules = modulesFiles.keys().reduce((modules, modulePath) => {
 
 const actions = {
   async hasUserInfo(context) {
+    var res = null
     try {
-      console.log('1111111111111111111111111111111111111111111111')
-      const res = await userInfo()
-      store.state.user.userInfo = res.data.user
-      console.log(res.data.user)
+      res = await userInfo()
+      store.state.user.userInfo.push(res.data)
+      store.state.user.permissions = JSON.stringify(res.data.permissions)
     } catch (error) {
       Message.error('用户信息获取失败')
     }
