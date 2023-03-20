@@ -1,4 +1,4 @@
-<!-- <template>
+<template>
   <div class="box">
     <videoPlayer
       ref="videoPlayer"
@@ -8,6 +8,7 @@
     />
   </div>
 </template>
+
 <script>
 import 'video.js/dist/video-js.css'
 import { videoPlayer } from 'vue-video-player'
@@ -46,6 +47,7 @@ export default {
   }
 }
 </script>
+
   <style>
   .box{
     margin: 1% 5%;
@@ -58,4 +60,4 @@ export default {
   .video-player{
     border-radius:15px;
   }
-  </style> -->
+  </style>

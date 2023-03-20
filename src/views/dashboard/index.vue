@@ -122,7 +122,7 @@
         </el-table-column>
       </el-table>
     </div>
-    <div v-if="value === '校园运动宣讲视频'">
+    <div v-if="value === 'run_video'">
       <!-- <h2 style="text-align: center;">校园运动宣讲视频</h2> -->
       <Video />
     </div>
@@ -140,35 +140,13 @@ export default {
     return {
       column1,
       options: [],
-      value: 'school',
+      value: 'run_video',
       tableData: [],
       page: {
         curr: 1,
         size: 10,
         count: 0
       }
-      // operates: {
-      //   width: 150,
-      //   fixed: 'right',
-      //   list: [
-      //     {
-      //       title: '编辑',
-      //       type: 'text',
-      //       method: (index, row) => {
-      //         this.editRole(row)
-      //       },
-      //       code: 'ui'
-      //     },
-      //     {
-      //       title: '删除',
-      //       type: 'primary',
-      //       method: (index, row) => {
-      //         this.deleteRole(row)
-      //       },
-      //       code: 'ui'
-      //     }
-      //   ]
-      // }
     }
   },
   // 监听属性 类似于data概念

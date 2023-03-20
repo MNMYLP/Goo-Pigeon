@@ -5,7 +5,7 @@
     style="width: 98%;
     margin: 0;"
   >
-    <div class="nav">
+    <!-- <div class="nav">
       <div class="left">
         学期名称：
         <el-select v-model="value" class="size" placeholder="请选择">
@@ -57,7 +57,7 @@
           </el-button>
         </div>
       </div>
-    </div>
+    </div> -->
     <!-- echerts图表 -->
     <div id="main_echerts" style="width: 900px; height: 400px;" />
     <!-- 弹层 -->
