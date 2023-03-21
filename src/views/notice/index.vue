@@ -1,230 +1,225 @@
 <!--  -->
 <template>
-  <div
-    class="stu"
-    style="width: 98%;
-    margin: 0;"
-  >
-    <div class="nav">
-      <div class="left">
-        学期名称：
-        <el-select v-model="value" class="size" placeholder="请选择">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
-        授课老师：
-        <el-select v-model="value" class="size" placeholder="请选择">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
-        课程名称：
-        <el-input v-model="input" class="size" size="mini" placeholder="请输入内容" />
-        课程状态：
-        <el-select v-model="value" class="size" placeholder="请选择">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
-        <el-button size="mini" type="primary" plain>查询</el-button>
-        <el-button size="mini" plain @click="clear()">重置</el-button>
-      </div>
-      <div class="right">
-        <el-button type="primary" style="margin-left: 16px;" @click="drawer = true">
-          添加课程
-        </el-button>
-      </div>
-    </div>
-    <el-table
-      ref="multipleTable"
-      :data="tableData"
-      tooltip-effect="dark"
-      style="width: 100%"
-      empty-text="数据为空!!!"
-      border
-      @selection-change="handleSelectionChange"
+  <div class="stu">
+    <el-tabs
+      v-model="activeName"
+      @tab-click="handleClick"
     >
-      <el-table-column
-        type="index"
-        label="序号"
-        width="55"
-      />
-      <el-table-column
-        prop="school_name"
-        label="院系名称"
+      <el-tab-pane
+        label="学校通知"
+        name="first"
       >
-        <!-- <template slot-scope="scope">{{ scope.row.date }}</template> -->
-      </el-table-column>
-      <el-table-column
-        prop="department"
-        label="入学年份"
-      />
-      <el-table-column
-        prop="addyear"
-        label="学期名称"
-      />
-      <el-table-column
-        prop="class"
-        label="学号"
-      />
-      <el-table-column
-        prop="stu_namber"
-        label="姓名"
-      />
-      <el-table-column
-        prop="name"
-        label="性别"
-      />
-      <el-table-column
-        prop="sex"
-        label="有效次数"
-      />
-      <el-table-column
-        prop="phone"
-        label="有效里程(公里数)"
-      />
-    </el-table>
+        <div class="nav">
+          <form class="left">
+            认证年份：
+            <el-date-picker
+              v-model="manageform.time"
+              value-format="yyyy-MM-dd"
+              type="date"
+              placeholder="选择日期"
+            />
+            学校名称：
+            <el-select
+              v-model="manageform.schoolName"
+              class="size"
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="(item,index) in stu_options"
+                :key="index"
+                :label="item"
+                :value="item"
+              />
+            </el-select>
+            入学年份：
+            <el-date-picker
+              v-model="manageform.addyear"
+              value-format="yyyy-MM-dd"
+              type="date"
+              placeholder="选择日期"
+            />
+            性别：
+            <el-select
+              v-model="manageform.sex"
+              class="size"
+              placeholder="请选择"
+            >
+              <el-option
+                label="男"
+                value="1"
+              />
+              <el-option
+                label="女"
+                value="0"
+              />
+            </el-select>
+            姓名：
+            <el-input
+              v-model="manageform.name"
+              class="size"
+              size="mini"
+              placeholder="请输入内容"
+            />
+            <el-button
+              size="mini"
+              type="primary"
+              plain
+              @click="student_one_select()"
+            >
+              查询
+            </el-button>
+            <el-button
+              size="mini"
+              plain
+              @click="clear()"
+            >
+              重置
+            </el-button>
+          </form>
+          <div class="right">
+            <el-button
+              id="del_btn"
+              size="mini"
+              type="danger"
+              @click="table_delet()"
+            >
+              删除
+            </el-button>
+            <el-button
+              size="mini"
+              type="primary"
+              @click="table_xlsx()"
+            >
+              导出
+            </el-button>
+          </div>
+        </div>
+        <el-table
+          ref="multipleTable"
+          :data="tableData"
+          tooltip-effect="dark"
+          style="width: 100%"
+          empty-text="数据为空!!!"
+          border
+          @selection-change="handleSelectionChange"
+        >
+          <el-table-column
+            type="selection"
+            width="55"
+          />
+          <el-table-column
+            prop="schoolName"
+            label="学校名称"
+          >
+            <!-- <template slot-scope="scope">{{ scope.row.date }}</template> -->
+          </el-table-column>
+          <el-table-column
+            prop="department"
+            label="院系名称"
+          />
+          <el-table-column
+            prop="addyear"
+            label="入学年份"
+          />
+          <el-table-column
+            prop="stuclass"
+            label="班级"
+          />
+          <el-table-column
+            prop="stuNumber"
+            label="学号"
+          />
+          <el-table-column
+            prop="name"
+            label="姓名"
+          />
+          <el-table-column
+            prop="sex"
+            label="性别"
+          >
+            <template v-slot="scope">
+              {{ scope.row.sex === '0' ? "女" : "男" }}
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="phone"
+            label="手机号"
+          />
+          <el-table-column
+            prop="state"
+            label="认证状态"
+          >
+            <template v-slot>
+              <i
+                style="font-size: 2rem;"
+                class="el-icon-check"
+              />
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="time"
+            label="认证时间"
+          />
+          <el-table-column
+            prop="operate"
+            label="操作"
+          >
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                type="text"
+                plain
+                @click="delete_id(scope.row.id)"
+              >
+                删除
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-pagination
+          background
+          :page-size="page.size"
+          :pager-count="10"
+          layout="prev, pager, next"
+          :total="page.count"
+          @current-change="handleCurrentChange"
+        />
+      </el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 
 <script>
+import { student_select, student_one_select, student_delte, student_false_select, student_update, student_insert } from '@/api/student'
+import { export_json_to_excel } from '@/vendor/Export2Excel'
+import XLSX from 'xlsx'
 export default {
-  name: 'StuData',
-  components: {},
+  components: { },
   data() {
     // 这里存放数据
     return {
+      wqeqe: [],
+      ids: [],
       activeName: 'first',
-      tableData: [{
-        school_name: '山东大学',
-        department: '黑人系',
-        addyear: '2020-1-1',
-        class: '刚果金',
-        stu_namber: '114514',
-        name: '小黑',
-        sex: '男',
-        phone: '114514114514',
-        state: 0,
-        time: '2020-1-2'
-      }],
+      tableData: [],
       multipleSelection: [],
       input: '',
-      options: [{
-        value: '选项1',
-        label: '黄金糕'
-      }, {
-        value: '选项2',
-        label: '双皮奶'
-      }, {
-        value: '选项3',
-        label: '蚵仔煎'
-      }, {
-        value: '选项4',
-        label: '龙须面'
-      }, {
-        value: '选项5',
-        label: '北京烤鸭'
-      }],
-      value: '',
-      drawer: false,
-      direction: 'rtl',
-      ruleForm: {
+      manageform: {
         name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
+        schoolName: '',
+        sex: '',
+        addyear: '',
+        time: ''
       },
-      rules: {
-        name: [
-          { required: true, message: '请输入活动名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-        ],
-        region: [
-          { required: true, message: '请选择活动区域', trigger: 'change' }
-        ],
-        date1: [
-          { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
-        ],
-        date2: [
-          { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
-        ],
-        type: [
-          { type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }
-        ],
-        resource: [
-          { required: true, message: '请选择活动资源', trigger: 'change' }
-        ],
-        desc: [
-          { required: true, message: '请填写活动形式', trigger: 'blur' }
-        ]
+      stu_options: [],
+      value: '',
+      page: {
+        curr: 1,
+        size: 10,
+        count: 0
       },
-      dialogImageUrl: '',
-      dialogVisible: false,
-      textarea: '',
-      tableData1: [{
-        date: '2016-05-03',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-02',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-08',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-06',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-07',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }]
+      // 已经选择的数据，在右边渲染
+      selectedAccount: []
     }
   },
   // 监听属性 类似于data概念
@@ -232,7 +227,9 @@ export default {
   // 监控data中的数据变化
   watch: {},
   // 生命周期 - 创建完成（可以访问当前this实例）
-  created() {},
+  created() {
+    this.tableList()
+  },
   // 生命周期 - 挂载完成（可以访问DOM元素）
   beforeCreate() {}, // 生命周期 - 创建之前
   beforeMount() {}, // 生命周期 - 挂载之前
@@ -241,15 +238,18 @@ export default {
   beforeDestroy() {}, // 生命周期 - 销毁之前
   destroyed() {}, // 生命周期 - 销毁完成
   activated() {}, // 如果页面有keep-alive缓存功能，这个函数会触发
-  mounted() {},
+  mounted() {
+    // this.tableData.forEach(item => {
+    //   console.log(item)
+    // })
+    // console.log()
+  },
   // 方法集合
   methods: {
     handleClick(tab, event) {
-      console.log(tab, event)
-    //   console.log(new Date())
-    },
-    clear() {
-      this.value = ''
+      console.log(tab)
+      tab.index === '0' ? this.tableList() : this.tablefalseList()
+      // console.log(new Date())
     },
     toggleSelection(rows) {
       if (rows) {
@@ -263,22 +263,177 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val
     },
-    handleClose(done) {
-      this.$confirm('确认关闭？')
-        .then(_ => {
-          done()
+    async tableList() {
+      const res = await student_select(this.page)
+      console.log(res)
+      this.tableData = res.data
+      if (res.code < 200) {
+        this.page.count = res.code
+      }
+      res.data.forEach(item => {
+        console.log(item.schoolName)
+        this.stu_options.push(item.schoolName)
+      })
+      console.log()
+    },
+    async tablefalseList() {
+      const res = await student_false_select(this.page)
+      console.log(res)
+      this.tableData = res.data
+      if (res.code < 200) {
+        this.page.count = res.code
+      }
+      res.data.forEach(item => {
+        console.log(item.schoolName)
+        this.stu_options.push(item.schoolName)
+      })
+      console.log()
+    },
+    async student_one_select() {
+      const restable = await student_one_select(this.manageform)
+      console.log(restable)
+      this.tableData = restable.data
+      this.page = {
+        curr: 1,
+        size: 10,
+        count: 1
+      }
+    },
+    clear() {
+      this.manageform = {
+        name: '',
+        schoolName: '',
+        sex: '',
+        addyear: '',
+        time: ''
+      }
+    },
+    async delete_id(e) {
+      this.ids.push(e)
+      const res = await student_delte({ 'ids': this.ids })
+      this.$message({
+        type: 'success',
+        message: res
+      })
+      this.ids = []
+      this.tableList()
+    },
+    handleCurrentChange(val) {
+      this.page.curr = val
+      this.tableList()
+    },
+    table_delet() {
+      this.multipleSelection.forEach(async item => {
+        this.ids.push(item.id)
+        const res = await student_delte({ 'ids': this.ids })
+        this.$message({
+          type: 'success',
+          message: res
         })
-        .catch(_ => {})
+        this.ids = []
+        this.tableList()
+      })
     },
-    onSubmit() {
-    //   console.log('submit!')
+    async switchChange(e) {
+      console.log(e)
+      const res = await student_update(e)
+      if (res === '修改成功') {
+        this.$message({
+          type: 'success',
+          message: res
+        })
+        this.tablefalseList()
+      } else {
+        this.$message({
+          type: 'error',
+          message: res
+        })
+      }
     },
-    handleRemove(file, fileList) {
-      console.log(file, fileList)
+    handleExport() {
+      window.open('http://rrjgiz15d.hn-bkt.clouddn.com/%E5%AD%A6%E6%A0%A1%E5%AD%A6%E7%94%9F%E8%AE%A4%E8%AF%81%E5%AF%BC%E5%85%A5%E6%A8%A1%E6%9D%BF.xlsx')
     },
-    handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url
-      this.dialogVisible = true
+    table_xlsx() {
+      var tHeader = ['学校名称', '院系名称', '入学年份', '班级', '学号', '姓名', '性别', '手机号', '认证状态', '认证时间']
+      var filterVal = ['schoolName', 'department', 'addyear', 'stuclass', 'stuNumber', 'name', 'sex', 'phone', 'state', 'time']
+      var filename = '学生信息表'
+      var data = this.formatJson(filterVal, this.tableData)
+      export_json_to_excel({
+        header: tHeader,
+        data,
+        filename
+      })
+    },
+    formatJson(filterVal, tableData) {
+      return tableData.map(v => {
+        return filterVal.map(j => {
+          return v[j]
+        })
+      }
+      )
+    },
+    upload(file, fileList) {
+      console.log(file, 'file')
+      console.log(fileList, 'fileList')
+      const files = { 0: file.raw }// 取到File
+      this.readExcel(files)
+    },
+    readExcel(files) { // 表格导入
+      // var that = this
+      console.log(files)
+      if (files.length <= 0) { // 如果没有文件名
+        return false
+      } else if (!/\.(xls|xlsx)$/.test(files[0].name.toLowerCase())) {
+        this.$Message.error('上传格式不正确，请上传xls或者xlsx格式')
+        return false
+      }
+
+      const fileReader = new FileReader()
+      fileReader.onload = async(ev) => {
+        try {
+          const data = ev.target.result
+          const workbook = XLSX.read(data, {
+            type: 'binary'
+          })
+          const wsname = workbook.SheetNames[0]// 取第一张表
+          const ws = XLSX.utils.sheet_to_json(workbook.Sheets[wsname])// 生成json表格内容
+          ws.splice(0, 1)
+          const newws = JSON.parse(JSON.stringify(ws)
+            .replace(/学校名称/g, 'schoolName')
+            .replace(/院系名称/g, 'department')
+            .replace(/入学年份/g, 'addyear')
+            .replace(/班级/g, 'stuclass')
+            .replace(/学号/g, 'stuNumber')
+            .replace(/姓名/g, 'name')
+            .replace(/性别/g, 'sex')
+            .replace(/女/g, '1')
+            .replace(/男/g, '0'))
+          const newwss = newws.map(item => {
+            return { ...item, 'id': Date.now().toString(), 'state': '1' }
+          })
+          console.log(newwss, 'ws是表格里的数据，且是json格式')
+          const res = await student_insert(newwss)
+          if (res === '添加成功') {
+            this.tablefalseList()
+            this.$message({
+              type: 'success',
+              message: res
+            })
+          } else {
+            this.$message({
+              type: 'error',
+              message: res
+            })
+          }
+          // this.tabData = ws
+          // console.log(this.tabData, 'tabdata')
+          // 重写数据
+          this.$refs.upload.value = ''
+        } catch (e) {
+          return false
+        }
+      }
+      fileReader.readAsBinaryString(files[0])
     }
   }
 }
@@ -296,14 +451,7 @@ export default {
   width: 100px;
   height: 50px;
 }
-.el-form-item {
-    margin-bottom: 0px;
+.el-date-editor.el-input, .el-date-editor.el-input__inner {
+    width: 185px;
 }
-.el-form-item--medium .el-form-item__content {
-    line-height: 20px;
-}
-p{
-  margin: 0 !important;;
-}
-
 </style>

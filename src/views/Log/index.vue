@@ -6,7 +6,7 @@
       @tab-click="handleClick"
     >
       <el-tab-pane
-        label="学生管理"
+        label="日志"
         name="first"
       >
         <div class="nav">
@@ -108,267 +108,35 @@
             width="55"
           />
           <el-table-column
-            prop="schoolName"
+            prop="username"
             label="学校名称"
           >
             <!-- <template slot-scope="scope">{{ scope.row.date }}</template> -->
           </el-table-column>
           <el-table-column
-            prop="department"
+            prop="operation"
             label="院系名称"
           />
           <el-table-column
-            prop="addyear"
+            prop="times"
             label="入学年份"
           />
           <el-table-column
-            prop="stuclass"
-            label="班级"
+            prop="method"
+            label="请求方法"
           />
           <el-table-column
-            prop="stuNumber"
-            label="学号"
+            prop="params"
+            label="请求参数"
           />
           <el-table-column
-            prop="name"
-            label="姓名"
+            prop="ip"
+            label="ip地址"
           />
           <el-table-column
-            prop="sex"
-            label="性别"
-          >
-            <template v-slot="scope">
-              {{ scope.row.sex === '0' ? "女" : "男" }}
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="phone"
-            label="手机号"
+            prop="createTime"
+            label="操作时间"
           />
-          <el-table-column
-            prop="state"
-            label="认证状态"
-          >
-            <template v-slot>
-              <i
-                style="font-size: 2rem;"
-                class="el-icon-check"
-              />
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="time"
-            label="认证时间"
-          />
-          <el-table-column
-            prop="operate"
-            label="操作"
-          >
-            <template slot-scope="scope">
-              <el-button
-                size="mini"
-                type="text"
-                plain
-                @click="delete_id(scope.row.id)"
-              >
-                删除
-              </el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-        <el-pagination
-          background
-          :page-size="page.size"
-          :pager-count="10"
-          layout="prev, pager, next"
-          :total="page.count"
-          @current-change="handleCurrentChange"
-        />
-      </el-tab-pane>
-      <el-tab-pane
-        label="学生认证"
-        name="second"
-      >
-        <div class="nav">
-          <form class="left">
-            认证年份：
-            <el-date-picker
-              v-model="manageform.time"
-              value-format="yyyy-MM-dd"
-              type="date"
-              placeholder="选择日期"
-            />
-            学校名称：
-            <el-select
-              v-model="manageform.schoolName"
-              class="size"
-              placeholder="请选择"
-            >
-              <el-option
-                v-for="(item,index) in stu_options"
-                :key="index"
-                :label="item"
-                :value="item"
-              />
-            </el-select>
-            入学年份：
-            <el-date-picker
-              v-model="manageform.addyear"
-              value-format="yyyy-MM-dd"
-              type="date"
-              placeholder="选择日期"
-            />
-            性别：
-            <el-select
-              v-model="manageform.sex"
-              class="size"
-              placeholder="请选择"
-            >
-              <el-option
-                label="男"
-                value="1"
-              />
-              <el-option
-                label="女"
-                value="0"
-              />
-            </el-select>
-            姓名：
-            <el-input
-              v-model="manageform.name"
-              class="size"
-              size="mini"
-              placeholder="请输入内容"
-            />
-            <el-button
-              size="mini"
-              type="primary"
-              plain
-              @click="student_one_select()"
-            >
-              查询
-            </el-button>
-            <el-button
-              size="mini"
-              plain
-              @click="clear()"
-            >
-              重置
-            </el-button>
-          </form>
-          <div class="right">
-            <el-button
-              id="del_btn"
-              size="mini"
-              type="danger"
-              @click="table_delet()"
-            >
-              删除
-            </el-button>
-            <!-- <el-button size="mini" type="primary" @click="table_xlsx()">导入</el-button> -->
-            <el-upload
-              ref="upload"
-              class="upload-demo"
-              accept=".xls,.xlsx"
-              action="https://jsonplaceholder.typicode.com/posts/"
-              :on-change="upload"
-              :show-file-list="false"
-              :auto-upload="false"
-            >
-              导入
-            </el-upload>
-            <el-button
-              size="mini"
-              type="primary"
-              @click="handleExport()"
-            >
-              下载模板
-            </el-button>
-          </div>
-        </div>
-        <el-table
-          ref="multipleTable"
-          :data="tableData"
-          tooltip-effect="dark"
-          style="width: 100%"
-          empty-text="数据为空!!!"
-          border
-          @selection-change="handleSelectionChange"
-        >
-          <el-table-column
-            type="selection"
-            width="55"
-          />
-          <el-table-column
-            prop="schoolName"
-            label="学校名称"
-          >
-            <!-- <template slot-scope="scope">{{ scope.row.date }}</template> -->
-          </el-table-column>
-          <el-table-column
-            prop="department"
-            label="院系名称"
-          />
-          <el-table-column
-            prop="addyear"
-            label="入学年份"
-          />
-          <el-table-column
-            prop="stuclass"
-            label="班级"
-          />
-          <el-table-column
-            prop="stuNumber"
-            label="学号"
-          />
-          <el-table-column
-            prop="name"
-            label="姓名"
-          />
-          <el-table-column
-            prop="sex"
-            label="性别"
-          >
-            <template v-slot="scope">
-              {{ scope.row.sex === '0' ? "女" : "男" }}
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="phone"
-            label="手机号"
-          />
-          <el-table-column
-            prop="state"
-            label="认证状态"
-          >
-            <template v-slot="scope">
-              <el-switch
-                v-model="scope.row.state"
-                active-color="#13ce66"
-                inactive-color="#ff4949"
-                @change="switchChange(scope.row.id)"
-              />
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="time"
-            label="认证时间"
-          />
-          <el-table-column
-            prop="operate"
-            label="操作"
-          >
-            <template slot-scope="scope">
-              <el-button
-                size="mini"
-                type="text"
-                plain
-                @click="delete_id(scope.row.id)"
-              >
-                删除
-              </el-button>
-            </template>
-          </el-table-column>
         </el-table>
         <el-pagination
           background
@@ -384,7 +152,8 @@
 </template>
 
 <script>
-import { student_select, student_one_select, student_delte, student_false_select, student_update, student_insert } from '@/api/student'
+import { student_one_select, student_delte, student_false_select, student_update, student_insert } from '@/api/student'
+import { getLog } from '@/api/log'
 import { export_json_to_excel } from '@/vendor/Export2Excel'
 import XLSX from 'xlsx'
 export default {
@@ -458,7 +227,7 @@ export default {
       this.multipleSelection = val
     },
     async tableList() {
-      const res = await student_select(this.page)
+      const res = await getLog(this.page)
       console.log(res)
       this.tableData = res.data
       if (res.code < 200) {
@@ -632,20 +401,21 @@ export default {
   }
 }
 </script>
-<style scoped>
-.nav{
-  display: flex;
-  font-size: 14px;
-  justify-content: space-between;
-}
-.right{
-  margin-right: 10px;
-}
-.size{
-  width: 100px;
-  height: 50px;
-}
-.el-date-editor.el-input, .el-date-editor.el-input__inner {
-    width: 185px;
-}
-</style>
+  <style scoped>
+  .nav{
+    display: flex;
+    font-size: 14px;
+    justify-content: space-between;
+  }
+  .right{
+    margin-right: 10px;
+  }
+  .size{
+    width: 100px;
+    height: 50px;
+  }
+  .el-date-editor.el-input, .el-date-editor.el-input__inner {
+      width: 185px;
+  }
+  </style>
+

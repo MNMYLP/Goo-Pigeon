@@ -1,6 +1,6 @@
 import router from './router'
 import store from './store'
-// import { Message } from 'element-ui'
+import { Message } from 'element-ui'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 // import { getToken } from '@/utils/auth' // get token from cookie
@@ -27,9 +27,13 @@ router.beforeEach(async(to, from, next) => {
       store.state.user.token = null
       store.state.user.userInfo = []
       router.push('/login')
+      Message.error('登录过期，请重新登录')
     }
   }
-  const role = 'admin'
+  // console.log(store.state.user.permissions)
+  // window.localStorage.setItem('permissions', store.state.user.permissions)
+  // const role = store.state.user.permissions
+  const role = window.localStorage.getItem('permissions')
   if (store.state.user.token !== null && role != null) {
     if (store.state.user.userInfo.length === 0) {
       await store.dispatch('hasUserInfo')

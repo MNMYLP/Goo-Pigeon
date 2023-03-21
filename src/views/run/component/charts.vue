@@ -5,59 +5,6 @@
     style="width: 98%;
     margin: 0;"
   >
-    <div class="nav">
-      <div class="left">
-        学期名称：
-        <el-select v-model="value" class="size" placeholder="请选择">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
-        入学年份：
-        <el-select v-model="value" class="size" placeholder="请选择">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
-        性别：
-        <el-select v-model="value" class="size" placeholder="请选择">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
-        日期：
-        <el-date-picker
-          v-model="value1"
-          type="daterange"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-        />
-        <el-button size="mini" type="primary" plain>查询</el-button>
-        <el-button size="mini" plain @click="clear()">重置</el-button>
-      </div>
-      <div class="right">
-        <div>
-          <el-button type="primary" style="">
-            导出
-          </el-button>
-        </div>
-        <div style="width:20px;margin-top:10px">
-          <el-button type="primary" style="" @click="dialogVisibleShow = true">
-            统计设置
-          </el-button>
-        </div>
-      </div>
-    </div>
     <!-- echerts图表 -->
     <div id="main" style="width: 900px; height: 400px;" />
     <!-- 弹层 -->

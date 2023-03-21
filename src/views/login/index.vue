@@ -214,7 +214,13 @@ export default {
             localStorage.setItem('tokenStartTime', new Date().getTime())
             // console.log(res)
             this.$store.state.user.token = res.data.token
-            localStorage.setItem('permissions', JSON.stringify(this.$store.state.user.permissions))
+            if (this.loginForm.userName === 'admin') {
+              window.localStorage.setItem('permissions', 'admin')
+            } else {
+              window.localStorage.setItem('permissions', 'test')
+            }
+            // console.log(this.$store.state.user.permissions)
+            // localStorage.setItem('permissions', JSON.stringify(this.$store.state.user.permissions))
             this.loading = false
             this.$router.push('/dashboard')
           } catch (error) {

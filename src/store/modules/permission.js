@@ -1,4 +1,4 @@
-import { asyncRoutes, constantRoutes } from '@/router'
+import { constantRoutes, TestRoutes } from '@/router'
 // import { userInfo } from '@/api/user'
 // import store from '@/store/index'
 /**
@@ -42,20 +42,20 @@ const state = {
 
 const mutations = {
   SET_ROUTES: (state, routes) => {
-    state.addRoutes = routes
-    state.routes = constantRoutes.concat(routes)
+    // state.addRoutes = routes
+    state.routes = routes
   }
 }
 
 const actions = {
   generateRoutes({ commit }, roles) {
-    // console.log(roles)
+    console.log(roles)
     return new Promise(resolve => {
       let accessedRoutes
       if (roles.includes('admin')) {
-        accessedRoutes = asyncRoutes || []
+        accessedRoutes = constantRoutes || []
       } else {
-        accessedRoutes = asyncRoutes
+        accessedRoutes = TestRoutes
       }
       commit('SET_ROUTES', accessedRoutes)
       resolve(accessedRoutes)

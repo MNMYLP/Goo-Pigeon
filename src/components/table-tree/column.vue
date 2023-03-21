@@ -7,7 +7,6 @@
     :width="col.width || ''"
   >
     <template v-for="(item, index) of col.children">
-      <!--这么写再来多少级嵌套都不怕了-->
       <column-item
         v-if="item.children"
         :key="index"

@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
 Vue.use(Router)
 
 /* Layout */
@@ -114,20 +113,7 @@ export const constantRoutes = [
         meta: { title: '学校通知', icon: 'user', noCache: true }
       }
     ]
-  },
-  // {
-  //   path: '/base',
-  //   component: Layout,
-  //   redirect: '/base/index',
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/base/index'),
-  //       name: 'Base',
-  //       meta: { title: '基础设置', icon: 'user', noCache: true }
-  //     }
-  //   ]
-  // },
+  }
   // {
   //   path: '/settings',
   //   component: Layout,
@@ -141,7 +127,7 @@ export const constantRoutes = [
   //     }
   //   ]
   // },
-  { path: '*', redirect: '/404', hidden: true }
+  // { path: '*', redirect: '/404', hidden: true }
 ]
 
 export const TestRoutes = [
@@ -176,6 +162,19 @@ export const TestRoutes = [
     path: '/401',
     component: () => import('@/views/error-page/401'),
     hidden: true
+  },
+  {
+    path: '/',
+    component: Layout,
+    redirect: '/dashboard',
+    children: [
+      {
+        path: 'dashboard',
+        component: () => import('@/views/dashboard/index'),
+        name: 'Dashboard',
+        meta: { title: '首页', icon: 'chart', affix: true }
+      }
+    ]
   }
 ]
 export const asyncRoutes = [
